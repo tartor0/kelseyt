@@ -22,9 +22,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="overflow-x-hidden">
       <body
-        className={`${livvic.variable} antialiased bg-[#0A0A0F] text-white overflow-hidden`}
+        className={`${livvic.variable} antialiased bg-[#0A0A0F] text-white overflow-x-hidden`}
         style={{ fontFamily: 'var(--font-livvic), sans-serif' }}
       >
         {children}
