@@ -1,8 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Background3D from './src/components/three/Background3D';
 import Link from 'next/link';
+import Header from './src/components/layout/Header';
+import Footer from './src/components/layout/Footer';
+import StatusBadge from './src/components/ui/StatusBadge';
+import CountdownTimer from './src/components/ui/CountdownTimer';
+import NewsletterForm from './src/components/ui/NewsletterForm';
+import Background3D from './src/components/three/Background3D';
 
 export default function Home() {
   const [timeLeft, setTimeLeft] = useState({
@@ -17,27 +22,37 @@ export default function Home() {
   const [notificationMessage, setNotificationMessage] = useState('');
 
   useEffect(() => {
+    // Set launch date to 45 days from now
     const targetDate = new Date();
     targetDate.setDate(targetDate.getDate() + 45);
 
     const updateCountdown = () => {
       const now = new Date().getTime();
       const distance = targetDate.getTime() - now;
+
       if (distance < 0) return;
 
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
       setTimeLeft({
-        days: Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0'),
-        hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0'),
-        minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0'),
-        seconds: Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0')
+        days: days.toString().padStart(2, '0'),
+        hours: hours.toString().padStart(2, '0'),
+        minutes: minutes.toString().padStart(2, '0'),
+        seconds: seconds.toString().padStart(2, '0')
       });
     };
 
     updateCountdown();
     const interval = setInterval(updateCountdown, 1000);
     
+    // Set current year
     const yearElement = document.getElementById('current-year');
-    if (yearElement) yearElement.textContent = new Date().getFullYear().toString();
+    if (yearElement) {
+      yearElement.textContent = new Date().getFullYear().toString();
+    }
 
     return () => clearInterval(interval);
   }, []);
@@ -46,14 +61,20 @@ export default function Home() {
     e.preventDefault();
     
     if (email && email.includes('@')) {
-      setNotificationMessage(`✅ ${email} added to waitlist!`);
+      setNotificationMessage(`✅ ${email} has been added to the waitlist!`);
       setShowNotification(true);
       setEmail('');
-      setTimeout(() => setShowNotification(false), 4000);
+      
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 5000);
     } else {
-      setNotificationMessage('❌ Valid email required');
+      setNotificationMessage('❌ Please enter a valid email address');
       setShowNotification(true);
-      setTimeout(() => setShowNotification(false), 3000);
+      
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 3000);
     }
   };
 
@@ -68,115 +89,163 @@ export default function Home() {
     <>
       <Background3D />
       
-      {/* Notification */}
-      <div className={`fixed top-5 right-5 z-50 transition-all duration-500 ${showNotification ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}`}>
-        <div className="bg-[#111118] border-l-4 border-[#1E6F9F] shadow-2xl px-5 py-3 backdrop-blur-sm">
+      {/* Notification System */}
+      <div className={`fixed top-6 right-6 z-50 transition-all duration-500 transform ${showNotification ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0 pointer-events-none'}`}>
+        <div className="bg-[#111118] border-l-4 border-[#1E6F9F] shadow-2xl px-6 py-4 max-w-md backdrop-blur-sm">
           <div className="flex items-center gap-3">
-            <span className="text-[#1E6F9F] text-sm">{notificationMessage}</span>
-            <button onClick={() => setShowNotification(false)} className="text-white/30 hover:text-white/60">✕</button>
+            <div className="text-[#1E6F9F]">
+              {notificationMessage.includes('✅') ? (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              ) : (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              )}
+            </div>
+            <p className="text-sm text-white/90 font-light">{notificationMessage}</p>
+            <button 
+              onClick={() => setShowNotification(false)}
+              className="ml-auto text-white/30 hover:text-white/60 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
         </div>
       </div>
       
-      <main className="relative z-10 flex flex-col min-h-screen w-screen pointer-events-none overflow-y-auto overflow-x-hidden">
+      {/* UI Overlay - new playful layout */}
+      <main className="relative z-10 flex flex-col h-screen w-screen pointer-events-none">
         
-        <header className="pointer-events-auto px-6 pt-8">
-          <div className="max-w-7xl mx-auto">
+        {/* Header - minimal */}
+        <header className="pointer-events-auto p-6 md:p-8">
+          <div className="max-w-7xl mx-auto w-full">
             <Link href="/">
-              <h1 className="text-2xl font-bold tracking-tighter uppercase text-white hover:text-[#1E6F9F] transition-colors inline-block">KELSEYT</h1>
+              <h1 className="text-xl md:text-2xl font-bold tracking-tighter uppercase text-white hover:text-[#1E6F9F] transition-colors inline-block cursor-pointer">
+                KELSEYT
+              </h1>
             </Link>
-            <div className="flex flex-wrap gap-x-6 text-xs text-white/40 font-light uppercase mt-3">
-              {services.map((service, i) => (
-                <Link 
-                  key={i}
-                  href={service.path}
-                  className="hover:text-[#1E6F9F] transition-colors"
-                >
-                  {service.name}
-                </Link>
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[8px] md:text-xs tracking-wider text-white/40 mt-2 font-light uppercase">
+              {services.map((service, index) => (
+                <div key={index} className="flex items-center gap-x-3">
+                  <Link 
+                    href={service.path}
+                    className="hover:text-[#1E6F9F] transition-colors cursor-pointer"
+                  >
+                    {service.name}
+                  </Link>
+                  {index < services.length - 1 && (
+                    <span className="text-[#1E6F9F]">◆</span>
+                  )}
+                </div>
               ))}
             </div>
           </div>
         </header>
 
-        <section className="flex-1 flex items-center justify-center pointer-events-auto px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="flex justify-center gap-2 text-3xl text-[#1E6F9F]/40 mb-6">
-              <span className="animate-bounce delay-0">Z</span>
-              <span className="animate-bounce delay-100">Z</span>
-              <span className="animate-bounce delay-200">Z</span>
-            </div>
+        {/* Hero Content - centered playful message */}
+        <div className="flex-1 flex items-center justify-center pointer-events-auto px-4">
+          <div className="max-w-4xl mx-auto w-full text-center">
             
-            <h2 className="text-5xl md:text-6xl font-black tracking-tighter text-white whitespace-nowrap">
-              Oops!! You caught us{" "}
-              <span className="text-[#1E6F9F] relative inline-block">
-                napping.
-                <span className="absolute -bottom-2 left-0 w-full h-1 bg-[#1E6F9F]/30"></span>
-              </span>
-            </h2>
-            
-            <p className="text-base md:text-lg text-white/50 mt-4">
-              Working behind the scenes to serve you better.
-            </p>
-            
-            <p className="text-xs text-white/30 uppercase tracking-wider mt-2">
-              Please watch out for this space!!
-            </p>
-
-            <div className="mt-12 max-w-md mx-auto">
-              <div className="grid grid-cols-4 gap-2 mb-4">
-                <TimeBox value={timeLeft.days} label="Days" />
-                <TimeBox value={timeLeft.hours} label="Hours" />
-                <TimeBox value={timeLeft.minutes} label="Mins" />
-                <TimeBox value={timeLeft.seconds} label="Secs" />
+            {/* Playful "Oops" section */}
+            <div className="space-y-8">
+              {/* ZZZ Icon - sleeping/napping indicator */}
+              <div className="flex justify-center gap-2 text-4xl md:text-5xl text-[#1E6F9F]/40 animate-pulse">
+                <span className="animate-bounce delay-0">Z</span>
+                <span className="animate-bounce delay-100">Z</span>
+                <span className="animate-bounce delay-200">Z</span>
               </div>
+              
+              <h2 className="text-5xl sm:text-6xl md:text-7xl font-black tracking-tighter leading-none text-white">
+                Oops!! You caught us
+                <br />
+                <span className="text-[#1E6F9F] relative inline-block">
+                  napping.
+                  <span className="absolute -bottom-2 left-0 w-full h-0.5 bg-[#1E6F9F]/30"></span>
+                </span>
+              </h2>
+              
+              <p className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed font-light">
+                Working behind the scenes to serve you better.
+              </p>
+              
+              <p className="text-sm md:text-base text-white/40 max-w-md mx-auto leading-relaxed uppercase tracking-wider">
+                Please watch out for this space!!
+              </p>
+              
+              {/* Decorative line */}
+              <div className="flex justify-center gap-2 pt-4">
+                <span className="w-12 h-px bg-[#1E6F9F]/30"></span>
+                <span className="w-2 h-2 rotate-45 border border-[#1E6F9F]/30"></span>
+                <span className="w-12 h-px bg-[#1E6F9F]/30"></span>
+              </div>
+            </div>
 
-              <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2">
-                <input 
-                  type="email" 
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email" 
-                  className="flex-1 bg-[#0A0A0F]/60 backdrop-blur-sm border border-white/10 px-4 py-3 text-xs text-white placeholder-white/30 focus:outline-none focus:border-[#1E6F9F] transition-colors" 
-                  required 
-                />
+            {/* Email Form - compact and centered */}
+            <div className="mt-12 max-w-md mx-auto">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="relative">
+                  <input 
+                    type="email" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email for updates" 
+                    className="w-full bg-[#0A0A0F]/60 backdrop-blur-sm border border-white/10 px-5 py-4 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#1E6F9F] transition-colors rounded-none font-light text-center" 
+                    required 
+                  />
+                </div>
                 
                 <button 
                   type="submit" 
-                  className="bg-[#1E6F9F] hover:bg-[#16567d] text-white text-xs font-medium px-6 py-3 whitespace-nowrap transition-colors"
+                  className="w-full bg-[#1E6F9F] hover:bg-[#16567d] text-white text-sm font-medium px-6 py-4 flex items-center justify-center gap-3 transition-all rounded-none group relative overflow-hidden"
                 >
-                  Get Notified
+                  <span className="relative z-10">Wake Me Up When It's Ready</span>
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    width="16" 
+                    height="16" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                    className="relative z-10 group-hover:rotate-12 transition-transform"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                  </svg>
+                  
+                  <span className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
                 </button>
               </form>
-              
-              <p className="text-[8px] text-white/20 text-center mt-3">No spam. Unsubscribe anytime.</p>
             </div>
           </div>
-        </section>
+        </div>
 
-        <footer className="pointer-events-auto px-6 py-6">
-          <div className="max-w-7xl mx-auto border-t border-white/5 pt-4">
-            <div className="flex flex-col sm:flex-row items-center justify-between text-[9px] text-white/30">
-              <div className="flex gap-6">
-                <Link href="/privacy" className="hover:text-white/60 transition-colors">Privacy</Link>
-                <Link href="/terms" className="hover:text-white/60 transition-colors">Terms</Link>
-                <Link href="/contact" className="hover:text-white/60 transition-colors">Contact</Link>
-              </div>
-              <p className="mt-2 sm:mt-0">© <span id="current-year"></span> KELSEYT</p>
+        {/* Footer - minimal */}
+        <footer className="pointer-events-auto p-6 md:p-8">
+          <div className="max-w-7xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px] text-white/30 font-light tracking-wider">
+            <div className="flex gap-6">
+              <Link href="/privacy" className="hover:text-white/60 transition-colors">Privacy</Link>
+              <Link href="/terms" className="hover:text-white/60 transition-colors">Terms</Link>
+              <Link href="/contact" className="hover:text-white/60 transition-colors">Contact</Link>
+            </div>
+            
+            <div className="flex items-center gap-4">
+              <a href="https://www.kelseyt.co" className="hover:text-white/60 transition-colors" target="_blank" rel="noopener noreferrer">
+                www.kelseyt.co
+              </a>
+              <span>|</span>
+              <p>© <span id="current-year"></span> KELSEYT</p>
             </div>
           </div>
         </footer>
 
       </main>
     </>
-  );
-}
-
-function TimeBox({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="bg-[#0A0A0F]/60 backdrop-blur-sm border border-[#1E6F9F]/20 p-2 text-center">
-      <span className="text-lg font-mono font-medium text-[#1E6F9F]">{value}</span>
-      <span className="block text-[7px] text-white/30 uppercase mt-0.5">{label}</span>
-    </div>
   );
 }
