@@ -78,10 +78,8 @@ export default function Home() {
         </div>
       </div>
       
-      {/* Main */}
       <main className="relative z-10 flex flex-col min-h-screen w-screen pointer-events-none overflow-y-auto overflow-x-hidden">
         
-        {/* Header */}
         <header className="pointer-events-auto px-6 pt-8">
           <div className="max-w-7xl mx-auto">
             <Link href="/">
@@ -101,7 +99,6 @@ export default function Home() {
           </div>
         </header>
 
-        {/* Centered Napping Message */}
         <section className="flex-1 flex items-center justify-center pointer-events-auto px-6">
           <div className="max-w-4xl mx-auto text-center">
             <div className="flex justify-center gap-2 text-3xl text-[#1E6F9F]/40 mb-6">
@@ -126,7 +123,6 @@ export default function Home() {
               Please watch out for this space!!
             </p>
 
-            {/* Countdown & Form */}
             <div className="mt-12 max-w-md mx-auto">
               <div className="grid grid-cols-4 gap-2 mb-4">
                 <TimeBox value={timeLeft.days} label="Days" />
@@ -158,7 +154,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Footer */}
         <footer className="pointer-events-auto px-6 py-6">
           <div className="max-w-7xl mx-auto border-t border-white/5 pt-4">
             <div className="flex flex-col sm:flex-row items-center justify-between text-[9px] text-white/30">
