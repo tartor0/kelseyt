@@ -15,6 +15,10 @@ export default function Home() {
     minutes: '00',
     seconds: '00'
   });
+  
+  const [email, setEmail] = useState('');
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
 
   useEffect(() => {
     // Set launch date to 45 days from now
@@ -52,88 +56,185 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (email && email.includes('@')) {
+      // Show success notification
+      setNotificationMessage(`✅ ${email} has been added to the waitlist!`);
+      setShowNotification(true);
+      setEmail('');
+      
+      // Auto-hide after 5 seconds
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 5000);
+    } else {
+      // Show error notification
+      setNotificationMessage('❌ Please enter a valid email address');
+      setShowNotification(true);
+      
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 3000);
+    }
+  };
+
   return (
     <>
       <Background3D />
       
-      {/* UI Overlay - reduced padding, better spacing */}
-      <main className="relative z-10 flex flex-col h-screen w-screen p-4 md:p-6 pointer-events-none">
+      {/* Notification System */}
+      <div className={`fixed top-6 right-6 z-50 transition-all duration-500 transform ${showNotification ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0 pointer-events-none'}`}>
+        <div className="bg-[#111118] border-l-4 border-[#1E6F9F] shadow-2xl px-6 py-4 max-w-md backdrop-blur-sm">
+          <div className="flex items-center gap-3">
+            <div className="text-[#1E6F9F]">
+              {notificationMessage.includes('✅') ? (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              ) : (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              )}
+            </div>
+            <p className="text-sm text-white/90 font-light">{notificationMessage}</p>
+            <button 
+              onClick={() => setShowNotification(false)}
+              className="ml-auto text-white/30 hover:text-white/60 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      {/* UI Overlay - new layout */}
+      <main className="relative z-10 flex flex-col h-screen w-screen pointer-events-none">
         
-        {/* Header - minimal spacing */}
-        <header className="flex flex-col items-center justify-center w-full pointer-events-auto pt-2">
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tighter uppercase text-white">
-            KELSEYT
-          </h1>
-          <div className="flex flex-wrap items-center justify-center gap-x-2 text-[10px] md:text-xs tracking-wider text-white/50 mt-2 font-light uppercase max-w-[90vw]">
-            <span>HEALTHTECH</span>
-            <span className="text-[#1E6F9F]">·</span>
-            <span>PAYMENT SYSTEMS</span>
-            <span className="text-[#1E6F9F]">·</span>
-            <span>INTEGRATIONS</span>
-            <span className="text-[#1E6F9F]">·</span>
-            <span>IT CONSULTING</span>
+        {/* Header - left aligned */}
+        <header className="pointer-events-auto p-6 md:p-8">
+          <div className="max-w-7xl mx-auto w-full">
+            <h1 className="text-xl md:text-2xl font-bold tracking-tighter uppercase text-white">
+              KELSEYT
+            </h1>
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[8px] md:text-xs tracking-wider text-white/40 mt-2 font-light uppercase">
+              <span>HEALTHTECH</span>
+              <span className="text-[#1E6F9F]">◆</span>
+              <span>PAYMENT SYSTEMS</span>
+              <span className="text-[#1E6F9F]">◆</span>
+              <span>INTEGRATIONS</span>
+              <span className="text-[#1E6F9F]">◆</span>
+              <span>IT CONSULTING</span>
+            </div>
           </div>
         </header>
 
-        {/* Hero Content - centered vertically with flex grow */}
-        <section className="flex-1 flex flex-col items-center justify-center text-center max-w-5xl mx-auto gap-4 md:gap-6 pointer-events-auto w-full px-2">
-          
-          <div className="space-y-2 md:space-y-3">
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter leading-tight text-white">
-              Something Massive<br />Is Coming.
-            </h2>
-            <p className="text-xs sm:text-sm md:text-base font-light text-white/60 max-w-2xl mx-auto leading-relaxed px-4">
-              Next-generation solid-state solutions in healthtech, secure payment systems and enterprise integrations. Launching soon.
-            </p>
+        {/* Hero Content - centered but more dynamic */}
+        <div className="flex-1 flex items-center justify-center pointer-events-auto px-4">
+          <div className="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            
+            {/* Left side - Text content */}
+            <div className="text-left space-y-6">
+              <div className="inline-block px-3 py-1 border border-[#1E6F9F]/30 bg-[#1E6F9F]/10 text-[#1E6F9F] text-xs font-medium tracking-wider uppercase">
+                Coming 2026
+              </div>
+              
+              <h2 className="text-5xl sm:text-6xl md:text-7xl font-black tracking-tighter leading-none text-white">
+                Something
+                <br />
+                <span className="text-[#1E6F9F]">Massive</span>
+                <br />
+                Is Coming.
+              </h2>
+              
+              <p className="text-sm md:text-base text-white/50 max-w-md leading-relaxed">
+                Next-generation solid-state solutions in healthtech, secure payment systems and enterprise integrations.
+              </p>
+            </div>
+
+            {/* Right side - Interactive elements */}
+            <div className="bg-[#0A0A0F]/40 backdrop-blur-sm border border-white/5 p-6 md:p-8 space-y-6">
+              
+              {/* Countdown Timer - horizontal */}
+              <div className="grid grid-cols-4 gap-2">
+                <TimeBox value={timeLeft.days} label="Days" />
+                <TimeBox value={timeLeft.hours} label="Hours" />
+                <TimeBox value={timeLeft.minutes} label="Mins" />
+                <TimeBox value={timeLeft.seconds} label="Secs" />
+              </div>
+
+              {/* Email Form */}
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="relative">
+                  <input 
+                    type="email" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email" 
+                    className="w-full bg-transparent border border-white/10 px-5 py-4 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#1E6F9F] transition-colors rounded-none font-light" 
+                    required 
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                    <svg className="w-4 h-4 text-white/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                </div>
+                
+                <button 
+                  type="submit" 
+                  className="w-full bg-[#1E6F9F] hover:bg-[#16567d] text-white text-sm font-medium px-6 py-4 flex items-center justify-center gap-3 transition-all rounded-none group relative overflow-hidden"
+                >
+                  <span className="relative z-10">Get Priority Access</span>
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    width="16" 
+                    height="16" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                    className="relative z-10 group-hover:translate-x-1 transition-transform"
+                  >
+                    <path d="M5 12h14" />
+                    <path d="m12 5 7 7-7 7" />
+                  </svg>
+                  
+                  {/* Animated background on hover */}
+                  <span className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
+                </button>
+                
+                <p className="text-[10px] text-white/20 text-center">
+                  Join the waitlist for exclusive updates and early access
+                </p>
+              </form>
+            </div>
           </div>
+        </div>
 
-          {/* Countdown Timer - compact */}
-          <div className="flex items-center justify-center gap-2 sm:gap-3 md:gap-4 w-full max-w-lg mt-2">
-            <TimeBox value={timeLeft.days} label="Days" />
-            <TimeBox value={timeLeft.hours} label="Hours" />
-            <TimeBox value={timeLeft.minutes} label="Mins" />
-            <TimeBox value={timeLeft.seconds} label="Secs" />
+        {/* Footer - bottom with links */}
+        <footer className="pointer-events-auto p-6 md:p-8">
+          <div className="max-w-7xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px] text-white/30 font-light tracking-wider">
+            <div className="flex gap-6">
+              <a href="#" className="hover:text-white/60 transition-colors">Privacy</a>
+              <a href="#" className="hover:text-white/60 transition-colors">Terms</a>
+              <a href="#" className="hover:text-white/60 transition-colors">Contact</a>
+            </div>
+            
+            <div className="flex items-center gap-4">
+              <a href="https://www.kelseyt.co" className="hover:text-white/60 transition-colors" target="_blank" rel="noopener noreferrer">
+                www.kelseyt.co
+              </a>
+              <span>|</span>
+              <p>© <span id="current-year"></span> KELSEYT</p>
+            </div>
           </div>
-
-          {/* Email Form - compact */}
-          <form className="flex flex-col sm:flex-row w-full max-w-md gap-0 mt-2 shadow-xl" onSubmit={(e) => e.preventDefault()}>
-            <input 
-              type="email" 
-              placeholder="Enter email" 
-              className="flex-1 bg-[#0A0A0F] border border-white/10 border-r-0 sm:border-r-0 text-xs sm:text-sm text-white placeholder-white/30 px-4 py-3 sm:px-5 sm:py-3.5 focus:outline-none focus:border-[#1E6F9F]/50 transition-colors rounded-none font-light" 
-              required 
-            />
-            <button 
-              type="submit" 
-              className="bg-[#1E6F9F] hover:bg-[#16567d] text-white text-xs sm:text-sm font-medium px-6 py-3 sm:px-8 sm:py-3.5 flex items-center justify-center gap-2 transition-colors rounded-none whitespace-nowrap group"
-            >
-              Notify
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                width="16" 
-                height="16" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-                className="group-hover:translate-x-1 transition-transform"
-              >
-                <path d="M5 12h14" />
-                <path d="m12 5 7 7-7 7" />
-              </svg>
-            </button>
-          </form>
-
-        </section>
-
-        {/* Footer - minimal */}
-        <footer className="flex flex-col sm:flex-row items-center justify-between w-full text-[10px] text-white/30 font-light pointer-events-auto gap-2 tracking-wider pb-2">
-          <a href="https://www.kelseyt.co" className="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
-            www.kelseyt.co
-          </a>
-          <p>© <span id="current-year"></span> KELSEYT</p>
         </footer>
 
       </main>
@@ -143,9 +244,9 @@ export default function Home() {
 
 function TimeBox({ value, label }: { value: string; label: string }) {
   return (
-    <div className="flex flex-col items-center justify-center bg-[#0A0A0F]/50 backdrop-blur-sm border border-[#1E6F9F]/30 p-3 sm:p-4 w-16 sm:w-20 md:w-24 transition-colors hover:border-[#1E6F9F]/60">
+    <div className="flex flex-col items-center justify-center bg-[#0A0A0F]/60 backdrop-blur-sm border border-[#1E6F9F]/20 p-3 transition-all hover:border-[#1E6F9F]/40 hover:scale-105 duration-300">
       <span className="text-xl sm:text-2xl md:text-3xl font-mono font-medium text-[#1E6F9F]">{value}</span>
-      <span className="text-[8px] sm:text-[10px] tracking-wider text-white/40 mt-1 uppercase font-light">{label}</span>
+      <span className="text-[8px] sm:text-[10px] tracking-wider text-white/30 mt-1 uppercase font-light">{label}</span>
     </div>
   );
 }
