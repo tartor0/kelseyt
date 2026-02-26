@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Background3D from './src/components/three/Background3D';
+import Link from 'next/link';
 
 export default function Home() {
   const [timeLeft, setTimeLeft] = useState({
@@ -56,7 +57,12 @@ export default function Home() {
     }
   };
 
-  const services = ['HEALTHTECH', 'PAYMENT SYSTEMS', 'INTEGRATIONS', 'IT CONSULTING'];
+  const services = [
+    { name: 'HEALTHTECH', path: '/healthtech' },
+    { name: 'PAYMENT SYSTEMS', path: '/payments' },
+    { name: 'INTEGRATIONS', path: '/integrations' },
+    { name: 'IT CONSULTING', path: '/consulting' }
+  ];
 
   return (
     <>
@@ -78,13 +84,18 @@ export default function Home() {
         {/* Header */}
         <header className="pointer-events-auto px-6 pt-8">
           <div className="max-w-7xl mx-auto">
-            <h1 className="text-2xl font-bold tracking-tighter uppercase text-white">KELSEYT</h1>
-            <div className="flex flex-wrap gap-x-4 text-[11px] text-white/40 font-light uppercase mt-1">
+            <Link href="/">
+              <h1 className="text-2xl font-bold tracking-tighter uppercase text-white hover:text-[#1E6F9F] transition-colors inline-block">KELSEYT</h1>
+            </Link>
+            <div className="flex flex-wrap gap-x-6 text-xs text-white/40 font-light uppercase mt-3">
               {services.map((service, i) => (
-                <span key={i}>
-                  {service}
-                  {i < services.length - 1 && <span className="text-[#1E6F9F] ml-4">◆</span>}
-                </span>
+                <Link 
+                  key={i}
+                  href={service.path}
+                  className="hover:text-[#1E6F9F] transition-colors"
+                >
+                  {service.name}
+                </Link>
               ))}
             </div>
           </div>
@@ -115,7 +126,7 @@ export default function Home() {
               Please watch out for this space!!
             </p>
 
-            {/* Countdown & Form - Compact */}
+            {/* Countdown & Form */}
             <div className="mt-12 max-w-md mx-auto">
               <div className="grid grid-cols-4 gap-2 mb-4">
                 <TimeBox value={timeLeft.days} label="Days" />
@@ -152,9 +163,9 @@ export default function Home() {
           <div className="max-w-7xl mx-auto border-t border-white/5 pt-4">
             <div className="flex flex-col sm:flex-row items-center justify-between text-[9px] text-white/30">
               <div className="flex gap-6">
-                <a href="#" className="hover:text-white/60 transition-colors">Privacy</a>
-                <a href="#" className="hover:text-white/60 transition-colors">Terms</a>
-                <a href="#" className="hover:text-white/60 transition-colors">Contact</a>
+                <Link href="/privacy" className="hover:text-white/60 transition-colors">Privacy</Link>
+                <Link href="/terms" className="hover:text-white/60 transition-colors">Terms</Link>
+                <Link href="/contact" className="hover:text-white/60 transition-colors">Contact</Link>
               </div>
               <p className="mt-2 sm:mt-0">© <span id="current-year"></span> KELSEYT</p>
             </div>
