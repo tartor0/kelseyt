@@ -118,38 +118,7 @@ export default function HealthTechPage() {
               Working behind the scenes to serve you better.
             </p>
             
-            <p className="text-xs text-white/30 uppercase tracking-wider mt-2">
-              Please watch out for this space!!
-            </p>
-
-            <div className="mt-12 max-w-md mx-auto">
-              <div className="grid grid-cols-4 gap-2 mb-4">
-                <TimeBox value={timeLeft.days} label="Days" />
-                <TimeBox value={timeLeft.hours} label="Hours" />
-                <TimeBox value={timeLeft.minutes} label="Mins" />
-                <TimeBox value={timeLeft.seconds} label="Secs" />
-              </div>
-
-              <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2">
-                <input 
-                  type="email" 
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email" 
-                  className="flex-1 bg-[#0A0A0F]/60 backdrop-blur-sm border border-white/10 px-4 py-3 text-xs text-white placeholder-white/30 focus:outline-none focus:border-[#1E6F9F] transition-colors" 
-                  required 
-                />
-                
-                <button 
-                  type="submit" 
-                  className="bg-[#1E6F9F] hover:bg-[#16567d] text-white text-xs font-medium px-6 py-3 whitespace-nowrap transition-colors"
-                >
-                  Get Notified
-                </button>
-              </form>
-              
-              <p className="text-[8px] text-white/20 text-center mt-3">No spam. Unsubscribe anytime.</p>
-            </div>
+           
           </div>
         </section>
 
