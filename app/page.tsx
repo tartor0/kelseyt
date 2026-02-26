@@ -60,17 +60,14 @@ export default function Home() {
     e.preventDefault();
     
     if (email && email.includes('@')) {
-      // Show success notification
       setNotificationMessage(`✅ ${email} has been added to the waitlist!`);
       setShowNotification(true);
       setEmail('');
       
-      // Auto-hide after 5 seconds
       setTimeout(() => {
         setShowNotification(false);
       }, 5000);
     } else {
-      // Show error notification
       setNotificationMessage('❌ Please enter a valid email address');
       setShowNotification(true);
       
@@ -112,10 +109,10 @@ export default function Home() {
         </div>
       </div>
       
-      {/* UI Overlay - new layout */}
+      {/* UI Overlay - new playful layout */}
       <main className="relative z-10 flex flex-col h-screen w-screen pointer-events-none">
         
-        {/* Header - left aligned */}
+        {/* Header - minimal */}
         <header className="pointer-events-auto p-6 md:p-8">
           <div className="max-w-7xl mx-auto w-full">
             <h1 className="text-xl md:text-2xl font-bold tracking-tighter uppercase text-white">
@@ -133,63 +130,63 @@ export default function Home() {
           </div>
         </header>
 
-        {/* Hero Content - centered but more dynamic */}
+        {/* Hero Content - centered playful message */}
         <div className="flex-1 flex items-center justify-center pointer-events-auto px-4">
-          <div className="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          <div className="max-w-4xl mx-auto w-full text-center">
             
-            {/* Left side - Text content */}
-            <div className="text-left space-y-6">
-              <div className="inline-block px-3 py-1 border border-[#1E6F9F]/30 bg-[#1E6F9F]/10 text-[#1E6F9F] text-xs font-medium tracking-wider uppercase">
-                Coming 2026
+            {/* Playful "Oops" section */}
+            <div className="space-y-8">
+              {/* ZZZ Icon - sleeping/napping indicator */}
+              <div className="flex justify-center gap-2 text-4xl md:text-5xl text-[#1E6F9F]/40 animate-pulse">
+                <span className="animate-bounce delay-0">Z</span>
+                <span className="animate-bounce delay-100">Z</span>
+                <span className="animate-bounce delay-200">Z</span>
               </div>
               
               <h2 className="text-5xl sm:text-6xl md:text-7xl font-black tracking-tighter leading-none text-white">
-                Something
+                Oops!! You caught us
                 <br />
-                <span className="text-[#1E6F9F]">Massive</span>
-                <br />
-                Is Coming.
+                <span className="text-[#1E6F9F] relative inline-block">
+                  napping.
+                  <span className="absolute -bottom-2 left-0 w-full h-0.5 bg-[#1E6F9F]/30"></span>
+                </span>
               </h2>
               
-              <p className="text-sm md:text-base text-white/50 max-w-md leading-relaxed">
-                Next-generation solid-state solutions in healthtech, secure payment systems and enterprise integrations.
+              <p className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed font-light">
+                Working behind the scenes to serve you better.
               </p>
+              
+              <p className="text-sm md:text-base text-white/40 max-w-md mx-auto leading-relaxed uppercase tracking-wider">
+                Please watch out for this space!!
+              </p>
+              
+              {/* Decorative line */}
+              <div className="flex justify-center gap-2 pt-4">
+                <span className="w-12 h-px bg-[#1E6F9F]/30"></span>
+                <span className="w-2 h-2 rotate-45 border border-[#1E6F9F]/30"></span>
+                <span className="w-12 h-px bg-[#1E6F9F]/30"></span>
+              </div>
             </div>
 
-            {/* Right side - Interactive elements */}
-            <div className="bg-[#0A0A0F]/40 backdrop-blur-sm border border-white/5 p-6 md:p-8 space-y-6">
-              
-              {/* Countdown Timer - horizontal */}
-              <div className="grid grid-cols-4 gap-2">
-                <TimeBox value={timeLeft.days} label="Days" />
-                <TimeBox value={timeLeft.hours} label="Hours" />
-                <TimeBox value={timeLeft.minutes} label="Mins" />
-                <TimeBox value={timeLeft.seconds} label="Secs" />
-              </div>
-
-              {/* Email Form */}
+            {/* Email Form - compact and centered */}
+            <div className="mt-12 max-w-md mx-auto">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="relative">
                   <input 
                     type="email" 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email" 
-                    className="w-full bg-transparent border border-white/10 px-5 py-4 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#1E6F9F] transition-colors rounded-none font-light" 
+                    placeholder="Enter your email for updates" 
+                    className="w-full bg-[#0A0A0F]/60 backdrop-blur-sm border border-white/10 px-5 py-4 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#1E6F9F] transition-colors rounded-none font-light text-center" 
                     required 
                   />
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                    <svg className="w-4 h-4 text-white/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                  </div>
                 </div>
                 
                 <button 
                   type="submit" 
                   className="w-full bg-[#1E6F9F] hover:bg-[#16567d] text-white text-sm font-medium px-6 py-4 flex items-center justify-center gap-3 transition-all rounded-none group relative overflow-hidden"
                 >
-                  <span className="relative z-10">Get Priority Access</span>
+                  <span className="relative z-10">Wake Me Up When It's Ready</span>
                   <svg 
                     xmlns="http://www.w3.org/2000/svg" 
                     width="16" 
@@ -200,25 +197,20 @@ export default function Home() {
                     strokeWidth="2" 
                     strokeLinecap="round" 
                     strokeLinejoin="round"
-                    className="relative z-10 group-hover:translate-x-1 transition-transform"
+                    className="relative z-10 group-hover:rotate-12 transition-transform"
                   >
-                    <path d="M5 12h14" />
-                    <path d="m12 5 7 7-7 7" />
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
                   </svg>
                   
-                  {/* Animated background on hover */}
                   <span className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
                 </button>
-                
-                <p className="text-[10px] text-white/20 text-center">
-                  Join the waitlist for exclusive updates and early access
-                </p>
               </form>
             </div>
           </div>
         </div>
 
-        {/* Footer - bottom with links */}
+        {/* Footer - minimal */}
         <footer className="pointer-events-auto p-6 md:p-8">
           <div className="max-w-7xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px] text-white/30 font-light tracking-wider">
             <div className="flex gap-6">
@@ -239,14 +231,5 @@ export default function Home() {
 
       </main>
     </>
-  );
-}
-
-function TimeBox({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="flex flex-col items-center justify-center bg-[#0A0A0F]/60 backdrop-blur-sm border border-[#1E6F9F]/20 p-3 transition-all hover:border-[#1E6F9F]/40 hover:scale-105 duration-300">
-      <span className="text-xl sm:text-2xl md:text-3xl font-mono font-medium text-[#1E6F9F]">{value}</span>
-      <span className="text-[8px] sm:text-[10px] tracking-wider text-white/30 mt-1 uppercase font-light">{label}</span>
-    </div>
   );
 }
