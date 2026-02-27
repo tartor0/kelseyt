@@ -255,9 +255,9 @@ export default function Home() {
         <div className="max-w-7xl mx-auto flex flex-col gap-3">
           <div className="flex flex-col gap-0.5">
             <Link href="/">
-              <h1 className="text-2xl font-bold tracking-tighter uppercase text-white hover:text-[#1E6F9F] transition-colors inline-block">KELSEYT</h1>
+              <h1 className="text-2xl font-bold tracking-tighter uppercase text-white hover:text-[#1E6F9F] transition-colors inline-block">KELSEYT LLC</h1>
             </Link>
-            <p className="text-white/35 text-[10px] tracking-wide">4726 Oak Bluff Ct, Fulshear TX 77441</p>
+            <p className="text-white/50 text-[12px] font-medium tracking-wide">4726 Oak Bluff Ct, Fulshear TX 77441</p>
           </div>
           <div className="flex flex-wrap gap-x-6 text-xs font-semibold text-white/60 uppercase tracking-wider">
             {services.map((service, i) => (
@@ -281,7 +281,7 @@ export default function Home() {
           <div className="max-w-6xl mx-auto w-full">
 
             {/* Catchphrase */}
-            <div className="text-center mb-10">
+            <div className="text-center mb-50">
               <h2 className="text-5xl md:text-7xl font-black tracking-tighter text-white mb-3">
                 Solutions that{' '}
                 <span className="text-[#1E6F9F] relative inline-block">
@@ -289,8 +289,6 @@ export default function Home() {
                   <span className="absolute -bottom-1 left-0 w-full h-[3px] bg-[#1E6F9F]/50" />
                 </span>
               </h2>
-              <p className="text-white/40 text-sm tracking-wide mt-5 mb-1 uppercase font-semibold">What we&apos;re building</p>
-              <p className="text-white/30 text-sm tracking-wide">Click any service to learn more</p>
             </div>
 
             {/* Service cards — big icons, rounded */}
