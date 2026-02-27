@@ -293,26 +293,26 @@ export default function Home() {
                   <button
                     key={i}
                     onClick={() => setActiveModal(service.key)}
-                    className="group text-left rounded-2xl border border-white/10 hover:border-[#1E6F9F]/60 bg-[#07070f]/85 backdrop-blur-md p-6 transition-all duration-300 hover:bg-[#0a0a1a]/90 hover:scale-[1.02]"
+                    className="group text-left rounded-2xl border border-white/10 hover:border-[#1E6F9F]/60 bg-[#07070f]/85 backdrop-blur-md p-8 pb-12 transition-all duration-300 hover:bg-[#0a0a1a]/90 hover:scale-[1.02]"
                     style={{ boxShadow: '0 4px 40px rgba(0,0,0,0.55)' }}
                   >
                     {/* Big icon block */}
-                    <div className="flex items-center justify-center w-16 h-16 rounded-xl bg-[#1E6F9F]/10 border border-[#1E6F9F]/20 group-hover:bg-[#1E6F9F]/20 group-hover:border-[#1E6F9F]/50 transition-all duration-300 mb-4">
+                    <div className="flex items-center justify-center w-20 h-20 rounded-2xl bg-[#1E6F9F]/10 border border-[#1E6F9F]/20 group-hover:bg-[#1E6F9F]/20 group-hover:border-[#1E6F9F]/50 transition-all duration-300 mb-6">
                       <span className="text-[#1E6F9F] group-hover:scale-110 transition-transform duration-300">
-                        <service.Icon size={32} />
+                        <service.Icon size={38} />
                       </span>
                     </div>
 
                     {/* Name + arrow */}
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-sm font-bold uppercase tracking-widest text-white group-hover:text-[#1E6F9F] transition-colors">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-base font-bold uppercase tracking-widest text-white group-hover:text-[#1E6F9F] transition-colors">
                         {service.name}
                       </span>
-                      <span className="text-white/20 group-hover:text-[#1E6F9F]/70 text-sm transition-all group-hover:translate-x-1 duration-300">→</span>
+                      <span className="text-white/20 group-hover:text-[#1E6F9F]/70 transition-all group-hover:translate-x-1 duration-300">→</span>
                     </div>
 
                     {/* Blurb */}
-                    <p className="text-white/50 text-sm leading-relaxed group-hover:text-white/70 transition-colors">
+                    <p className="text-white/50 text-base leading-relaxed group-hover:text-white/70 transition-colors">
                       {data.cardBlurb}
                     </p>
                   </button>

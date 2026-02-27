@@ -72,23 +72,23 @@ export default function Background3D() {
 
     // ── Services ──
     const SERVICES = [
-      { name: 'HEALTHTECH',      sub: 'Patient-first technology',  angle: 0,              color: '#00d4ff', hex: 0x00d4ff },
-      { name: 'PAYMENT SYSTEMS', sub: 'Fast. Secure. Global.',      angle: Math.PI / 2,    color: '#00ffcc', hex: 0x00ffcc },
-      { name: 'INTEGRATIONS',    sub: 'Connect everything',         angle: Math.PI,        color: '#a855f7', hex: 0xa855f7 },
-      { name: 'IT CONSULTING',   sub: 'Transform your operations',  angle: 3*Math.PI/2,    color: '#ff6eb0', hex: 0xff6eb0 },
+      { name: 'HEALTHTECH',      sub: 'Patient-first technology',  angle: 0              },
+      { name: 'PAYMENT SYSTEMS', sub: 'Fast. Secure. Global.',      angle: Math.PI / 2    },
+      { name: 'INTEGRATIONS',    sub: 'Connect everything',         angle: Math.PI        },
+      { name: 'IT CONSULTING',   sub: 'Transform your operations',  angle: 3*Math.PI/2    },
     ];
 
-    const GLOBE_R  = 8.5;  // globe surface radius
-    const LABEL_R  = 13.5; // label centre radius
+    const COLOR   = '#00ffcc';
+    const HEX     = 0x00ffcc;
+    const GLOBE_R = 8.5;
+    const LABEL_R = 13.5;
 
-    // ── Canvas texture builder ──
-    function makeTexture(name: string, sub: string, color: string): THREE.CanvasTexture {
+    function makeTexture(name: string, sub: string): THREE.CanvasTexture {
       const W = 580, H = 148;
       const cv = document.createElement('canvas');
       cv.width = W; cv.height = H;
       const ctx = cv.getContext('2d')!;
 
-      // background
       const bg = ctx.createLinearGradient(0,0,W,0);
       bg.addColorStop(0,'rgba(7,7,18,0.98)');
       bg.addColorStop(1,'rgba(10,10,26,0.95)');
@@ -96,35 +96,30 @@ export default function Background3D() {
       ctx.beginPath();
       (ctx as any).roundRect?.(3,3,W-6,H-6,4) ?? ctx.rect(3,3,W-6,H-6);
       ctx.fillStyle = bg as any; ctx.fill();
-      ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.globalAlpha = 0.7; ctx.stroke();
-      ctx.globalAlpha = 1; ctx.restore();
+      ctx.strokeStyle = COLOR; ctx.lineWidth=2; ctx.globalAlpha=0.7; ctx.stroke();
+      ctx.globalAlpha=1; ctx.restore();
 
-      // left bar
       const bar = ctx.createLinearGradient(0,16,0,H-16);
-      bar.addColorStop(0,'transparent'); bar.addColorStop(0.5,color); bar.addColorStop(1,'transparent');
-      ctx.fillStyle = bar; ctx.fillRect(14,16,2.5,H-32);
+      bar.addColorStop(0,'transparent'); bar.addColorStop(0.5,COLOR); bar.addColorStop(1,'transparent');
+      ctx.fillStyle=bar; ctx.fillRect(14,16,2.5,H-32);
 
-      // name
-      ctx.font = '900 32px "Livvic","Arial Black",Arial,sans-serif';
-      ctx.fillStyle = '#ffffff'; ctx.shadowColor = color; ctx.shadowBlur = 18;
-      ctx.fillText(name, 30, H/2+4); ctx.shadowBlur = 0;
+      ctx.font='900 32px "Livvic","Arial Black",Arial,sans-serif';
+      ctx.fillStyle='#ffffff'; ctx.shadowColor=COLOR; ctx.shadowBlur=18;
+      ctx.fillText(name,30,H/2+4); ctx.shadowBlur=0;
 
-      // divider
-      ctx.strokeStyle = color; ctx.globalAlpha=0.2; ctx.lineWidth=1;
+      ctx.strokeStyle=COLOR; ctx.globalAlpha=0.2; ctx.lineWidth=1;
       ctx.beginPath(); ctx.moveTo(30,H/2+18); ctx.lineTo(W-30,H/2+18); ctx.stroke();
       ctx.globalAlpha=1;
 
-      // sub
-      ctx.font = '400 19px "Livvic",Arial,sans-serif';
-      ctx.fillStyle = color; ctx.globalAlpha=0.85;
-      ctx.fillText(sub, 30, H/2+40); ctx.globalAlpha=1;
+      ctx.font='400 19px "Livvic",Arial,sans-serif';
+      ctx.fillStyle=COLOR; ctx.globalAlpha=0.85;
+      ctx.fillText(sub,30,H/2+40); ctx.globalAlpha=1;
 
       return new THREE.CanvasTexture(cv);
     }
 
-    // ── Load Livvic then build SINGLE sprite + single line ──
-    // One sprite that repositions + retextures = zero overlap possible
-
+    // ── SINGLE sprite + line + dot ──
+    // One object. Repositions and retextures while faded out. Zero overlap.
     let spriteMat: THREE.SpriteMaterial | null = null;
     let sprite: THREE.Sprite | null = null;
     let lineMat: THREE.LineBasicMaterial | null = null;
@@ -132,40 +127,25 @@ export default function Background3D() {
     let dotMat: THREE.MeshBasicMaterial | null = null;
     let dot: THREE.Mesh | null = null;
 
-    // Pre-build all textures upfront
     const textures: THREE.CanvasTexture[] = [];
 
     function buildAll() {
-      SERVICES.forEach(svc => {
-        textures.push(makeTexture(svc.name, svc.sub, svc.color));
-      });
+      SERVICES.forEach(s => textures.push(makeTexture(s.name, s.sub)));
 
-      // Single sprite — starts invisible
-      spriteMat = new THREE.SpriteMaterial({
-        map: textures[0],
-        transparent: true,
-        opacity: 0,
-        depthWrite: false,
-        depthTest: false,
-      });
+      spriteMat = new THREE.SpriteMaterial({ map: textures[0], transparent: true, opacity: 0, depthWrite: false, depthTest: false });
       sprite = new THREE.Sprite(spriteMat);
       sprite.scale.set(9.5, 2.4, 1);
       sprite.position.set(LABEL_R, 0, 0);
       sceneGroup.add(sprite);
 
-      // Single line
       lineGeo = new THREE.BufferGeometry().setFromPoints([
         new THREE.Vector3(GLOBE_R, 0, 0),
         new THREE.Vector3(LABEL_R - 4.8, 0, 0),
       ]);
-      lineMat = new THREE.LineBasicMaterial({
-        color: SERVICES[0].hex, transparent: true, opacity: 0,
-      });
-      const line = new THREE.Line(lineGeo, lineMat);
-      sceneGroup.add(line);
+      lineMat = new THREE.LineBasicMaterial({ color: HEX, transparent: true, opacity: 0 });
+      sceneGroup.add(new THREE.Line(lineGeo, lineMat));
 
-      // Dot at globe surface
-      dotMat = new THREE.MeshBasicMaterial({ color: SERVICES[0].hex, transparent: true, opacity: 0 });
+      dotMat = new THREE.MeshBasicMaterial({ color: HEX, transparent: true, opacity: 0 });
       dot = new THREE.Mesh(new THREE.SphereGeometry(0.14,8,8), dotMat);
       dot.position.set(GLOBE_R, 0, 0);
       sceneGroup.add(dot);
@@ -179,57 +159,60 @@ export default function Background3D() {
     const onMM = (e: MouseEvent) => { mouse.x=(e.clientX/window.innerWidth)*2-1; mouse.y=-(e.clientY/window.innerHeight)*2+1; };
     window.addEventListener('mousemove', onMM);
 
-    // ── State machine ──
-    let activeIdx   = -1;
+    // ── State ──
+    // Slower spin: ~56 seconds per full rotation
+    const SPIN       = 0.0018;
+    const FADE_IN    = 0.055;
+    const FADE_OUT   = 0.08;
+    // Only show a label when it's clearly front-facing (score > 0.65)
+    // Hide it well before the next one could appear (< 0.4)
+    // This guarantees a clean gap between labels
+    const SHOW_THR   = 0.65;
+    const HIDE_THR   = 0.40;
+
+    let activeIdx    = -1;
     let currentOpacity = 0;
-    const FADE_IN   = 0.06;
-    const FADE_OUT  = 0.09;
-    const ACT_THR   = 0.72;
-    const DEACT_THR = 0.50;
+
+    function placeAt(idx: number) {
+      if (!sprite || !spriteMat || !lineMat || !lineGeo || !dot || !dotMat) return;
+      const a = SERVICES[idx].angle;
+      spriteMat.map = textures[idx];
+      spriteMat.map.needsUpdate = true;
+      sprite.position.set(Math.cos(a)*LABEL_R, 0, Math.sin(a)*LABEL_R);
+      dot.position.set(Math.cos(a)*GLOBE_R, 0, Math.sin(a)*GLOBE_R);
+      lineGeo.setFromPoints([
+        new THREE.Vector3(Math.cos(a)*GLOBE_R, 0, Math.sin(a)*GLOBE_R),
+        new THREE.Vector3(Math.cos(a)*(LABEL_R-4.8), 0, Math.sin(a)*(LABEL_R-4.8)),
+      ]);
+    }
 
     function animate() {
       requestAnimationFrame(animate);
 
-      sceneGroup.rotation.y += 0.004;
+      sceneGroup.rotation.y += SPIN;
       sceneGroup.rotation.x += (mouse.y * 0.15 - sceneGroup.rotation.x) * 0.02;
       core.rotation.y += 0.001; core.rotation.x += 0.0005;
       innerSphere.rotation.y -= 0.002;
       particles.rotation.y += 0.0001;
 
-      if (sprite && spriteMat && lineMat && dot && dotMat && lineGeo) {
+      if (spriteMat && lineMat && dotMat) {
         const rotY = sceneGroup.rotation.y;
         const scores = SERVICES.map(({ angle }) => Math.cos(angle + rotY));
         const bestIdx = scores.indexOf(Math.max(...scores));
 
-        // Hysteresis
+        // Hysteresis: activate only when clearly front-facing, deactivate early
         if (activeIdx === -1) {
-          if (scores[bestIdx] > ACT_THR) {
+          // Only activate when opacity is low (fully faded) to avoid mid-fade swap
+          if (scores[bestIdx] > SHOW_THR && currentOpacity < 0.05) {
             activeIdx = bestIdx;
-            // Snap to new service immediately (texture swap while invisible)
-            spriteMat.map = textures[activeIdx];
-            spriteMat.map.needsUpdate = true;
-            // Reposition sprite, line and dot to face this service
-            const a = SERVICES[activeIdx].angle;
-            sprite.position.set(Math.cos(a)*LABEL_R, 0, Math.sin(a)*LABEL_R);
-            dot.position.set(Math.cos(a)*GLOBE_R, 0, Math.sin(a)*GLOBE_R);
-            // Update line geometry
-            const pts = [
-              new THREE.Vector3(Math.cos(a)*GLOBE_R, 0, Math.sin(a)*GLOBE_R),
-              new THREE.Vector3(Math.cos(a)*(LABEL_R-4.8), 0, Math.sin(a)*(LABEL_R-4.8)),
-            ];
-            lineGeo.setFromPoints(pts);
-            // Colour
-            const col = new THREE.Color(SERVICES[activeIdx].hex);
-            lineMat.color = col;
-            dotMat.color  = col;
+            placeAt(activeIdx);
           }
         } else {
-          if (scores[activeIdx] < DEACT_THR) {
+          if (scores[activeIdx] < HIDE_THR) {
             activeIdx = -1;
           }
         }
 
-        // Smooth opacity — ONE target
         const target = activeIdx !== -1 ? 1 : 0;
         const speed  = target > currentOpacity ? FADE_IN : FADE_OUT;
         currentOpacity += (target - currentOpacity) * speed;
