@@ -253,9 +253,12 @@ export default function Home() {
       {/* ── FIXED NAVBAR ── */}
       <header className="fixed top-0 left-0 right-0 z-40 pointer-events-auto px-6 pt-6 pb-4 bg-gradient-to-b from-[#07070f]/90 to-transparent backdrop-blur-sm">
         <div className="max-w-7xl mx-auto flex flex-col gap-3">
-          <Link href="/">
-            <h1 className="text-2xl font-bold tracking-tighter uppercase text-white hover:text-[#1E6F9F] transition-colors inline-block">KELSEYT</h1>
-          </Link>
+          <div className="flex flex-col gap-0.5">
+            <Link href="/">
+              <h1 className="text-2xl font-bold tracking-tighter uppercase text-white hover:text-[#1E6F9F] transition-colors inline-block">KELSEYT</h1>
+            </Link>
+            <p className="text-white/35 text-[10px] tracking-wide">4726 Oak Bluff Ct, Fulshear TX 77441</p>
+          </div>
           <div className="flex flex-wrap gap-x-6 text-xs font-semibold text-white/60 uppercase tracking-wider">
             {services.map((service, i) => (
               <button
@@ -274,16 +277,21 @@ export default function Home() {
       </header>
 
         {/* ── HERO: service card grid ── */}
-        <section className="pointer-events-auto px-6 pt-[520px] pb-32">
+        <section className="pointer-events-auto px-6 pt-[400px] pb-32">
           <div className="max-w-6xl mx-auto w-full">
 
-            {/* Tagline */}
-            <p className="text-center text-sm font-semibold text-[#1E6F9F] uppercase tracking-widest mb-2">
-              What we&apos;re building
-            </p>
-            <p className="text-center text-white/40 text-sm mb-10 tracking-wide">
-              Click any service to learn more
-            </p>
+            {/* Catchphrase */}
+            <div className="text-center mb-10">
+              <h2 className="text-5xl md:text-7xl font-black tracking-tighter text-white mb-3">
+                Solutions that{' '}
+                <span className="text-[#1E6F9F] relative inline-block">
+                  simply work.
+                  <span className="absolute -bottom-1 left-0 w-full h-[3px] bg-[#1E6F9F]/50" />
+                </span>
+              </h2>
+              <p className="text-white/40 text-sm tracking-wide mt-5 mb-1 uppercase font-semibold">What we&apos;re building</p>
+              <p className="text-white/30 text-sm tracking-wide">Click any service to learn more</p>
+            </div>
 
             {/* Service cards — big icons, rounded */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
