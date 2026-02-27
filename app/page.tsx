@@ -275,7 +275,7 @@ export default function Home() {
 
         {/* ── HERO: service card grid ── */}
         <section className="pointer-events-auto px-6 pt-[520px] pb-32">
-          <div className="max-w-4xl mx-auto w-full">
+          <div className="max-w-6xl mx-auto w-full">
 
             {/* Tagline */}
             <p className="text-center text-sm font-semibold text-[#1E6F9F] uppercase tracking-widest mb-2">
@@ -297,9 +297,9 @@ export default function Home() {
                     style={{ boxShadow: '0 4px 40px rgba(0,0,0,0.55)' }}
                   >
                     {/* Big icon block */}
-                    <div className="flex items-center justify-center w-20 h-20 rounded-2xl bg-[#1E6F9F]/10 border border-[#1E6F9F]/20 group-hover:bg-[#1E6F9F]/20 group-hover:border-[#1E6F9F]/50 transition-all duration-300 mb-6">
+                    <div className="flex items-center justify-center w-15 h-15 rounded-2xl bg-[#1E6F9F]/10 border border-[#1E6F9F]/20 group-hover:bg-[#1E6F9F]/20 group-hover:border-[#1E6F9F]/50 transition-all duration-300 mb-6">
                       <span className="text-[#1E6F9F] group-hover:scale-110 transition-transform duration-300">
-                        <service.Icon size={38} />
+                        <service.Icon size={35} />
                       </span>
                     </div>
 
