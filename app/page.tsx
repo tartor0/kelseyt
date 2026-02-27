@@ -257,7 +257,7 @@ export default function Home() {
             <Link href="/">
               <h1 className="text-2xl font-bold tracking-tighter uppercase text-white hover:text-[#1E6F9F] transition-colors inline-block">KELSEY T LLC</h1>
             </Link>
-            <p className="text-white/50 text-[12px] font-medium tracking-wide">4726 Oak Bluff Ct, Fulshear TX 77441</p>
+            <p className="text-white/50 text-[14px] font-medium tracking-wide">4726 Oak Bluff Ct, Fulshear TX 77441</p>
           </div>
           <div className="flex flex-wrap gap-x-6 text-xs font-semibold text-white/60 uppercase tracking-wider">
             {services.map((service, i) => (
