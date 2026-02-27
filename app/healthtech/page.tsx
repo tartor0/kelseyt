@@ -3,48 +3,28 @@
 import { useEffect, useState } from 'react';
 import Background3D from '../src/components/three/Background3D';
 import Link from 'next/link';
+import {
+  HeartPulseIcon,
+  CreditCardIcon,
+  PuzzleIcon,
+  ComputerIcon,
+  StethoscopeIcon,
+  ActivityIcon,
+  MedicineIcon,
+} from '../src/ServiceIcons';
 
 export default function HealthTechPage() {
-  const [timeLeft, setTimeLeft] = useState({
-    days: '00',
-    hours: '00',
-    minutes: '00',
-    seconds: '00'
-  });
-  
   const [email, setEmail] = useState('');
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
 
   useEffect(() => {
-    const targetDate = new Date();
-    targetDate.setDate(targetDate.getDate() + 45);
-
-    const updateCountdown = () => {
-      const now = new Date().getTime();
-      const distance = targetDate.getTime() - now;
-      if (distance < 0) return;
-
-      setTimeLeft({
-        days: Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0'),
-        hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0'),
-        minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0'),
-        seconds: Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0')
-      });
-    };
-
-    updateCountdown();
-    const interval = setInterval(updateCountdown, 1000);
-    
     const yearElement = document.getElementById('current-year');
     if (yearElement) yearElement.textContent = new Date().getFullYear().toString();
-
-    return () => clearInterval(interval);
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (email && email.includes('@')) {
       setNotificationMessage(`✅ ${email} added to waitlist!`);
       setShowNotification(true);
@@ -58,16 +38,16 @@ export default function HealthTechPage() {
   };
 
   const services = [
-    { name: 'HEALTHTECH', path: '/healthtech' },
-    { name: 'PAYMENT SYSTEMS', path: '/payments' },
-    { name: 'INTEGRATIONS', path: '/integrations' },
-    { name: 'IT CONSULTING', path: '/consulting' }
+    { name: 'HEALTHTECH', path: '/healthtech', icon: <HeartPulseIcon size={13} /> },
+    { name: 'PAYMENT SYSTEMS', path: '/payments', icon: <CreditCardIcon size={13} /> },
+    { name: 'INTEGRATIONS', path: '/integrations', icon: <PuzzleIcon size={13} /> },
+    { name: 'IT CONSULTING', path: '/consulting', icon: <ComputerIcon size={13} /> },
   ];
 
   return (
     <>
       <Background3D />
-      
+
       <div className={`fixed top-5 right-5 z-50 transition-all duration-500 ${showNotification ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}`}>
         <div className="bg-[#111118] border-l-4 border-[#1E6F9F] shadow-2xl px-5 py-3 backdrop-blur-sm">
           <div className="flex items-center gap-3">
@@ -76,9 +56,9 @@ export default function HealthTechPage() {
           </div>
         </div>
       </div>
-      
+
       <main className="relative z-10 flex flex-col min-h-screen w-screen pointer-events-none overflow-y-auto overflow-x-hidden">
-        
+
         <header className="pointer-events-auto px-6 pt-8">
           <div className="max-w-7xl mx-auto">
             <Link href="/">
@@ -86,11 +66,8 @@ export default function HealthTechPage() {
             </Link>
             <div className="flex flex-wrap gap-x-6 text-xs text-white/40 font-light uppercase mt-3">
               {services.map((service, i) => (
-                <Link 
-                  key={i}
-                  href={service.path}
-                  className="hover:text-[#1E6F9F] transition-colors"
-                >
+                <Link key={i} href={service.path} className="flex items-center gap-1.5 hover:text-[#1E6F9F] transition-colors group">
+                  <span className="opacity-50 group-hover:opacity-100 transition-opacity">{service.icon}</span>
                   {service.name}
                 </Link>
               ))}
@@ -100,25 +77,42 @@ export default function HealthTechPage() {
 
         <section className="flex-1 flex items-center justify-center pointer-events-auto px-6">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="flex justify-center gap-2 text-3xl text-[#1E6F9F]/40 mb-6">
-              <span className="animate-bounce delay-0">Z</span>
-              <span className="animate-bounce delay-100">Z</span>
-              <span className="animate-bounce delay-200">Z</span>
+
+            {/* Icon cluster */}
+            <div className="flex justify-center items-end gap-6 mb-8">
+              <div className="text-[#1E6F9F]/30 animate-pulse">
+                <MedicineIcon size={32} />
+              </div>
+              <div className="text-[#1E6F9F]/70 animate-bounce">
+                <HeartPulseIcon size={48} />
+              </div>
+              <div className="text-[#1E6F9F]/30 animate-pulse" style={{ animationDelay: '500ms' }}>
+                <StethoscopeIcon size={32} />
+              </div>
             </div>
-            
-            <h2 className="text-5xl md:text-6xl font-black tracking-tighter text-white whitespace-nowrap">
-              Oops!! You caught us{" "}
-              <span className="text-[#1E6F9F] relative inline-block">
+
+            {/* Service badge */}
+            <div className="inline-flex items-center gap-2 text-[#1E6F9F]/60 text-[10px] uppercase tracking-widest mb-6 border border-[#1E6F9F]/20 px-4 py-1.5">
+              <ActivityIcon size={11} />
+              HEALTHTECH
+            </div>
+
+            {/* Main headline */}
+            <h2 className="text-5xl md:text-6xl font-black tracking-tighter text-white leading-tight">
+              Oops!! You caught us <span className="text-[#1E6F9F] relative inline-block">
                 napping.
                 <span className="absolute -bottom-2 left-0 w-full h-1 bg-[#1E6F9F]/30"></span>
               </span>
             </h2>
-            
-            <p className="text-base md:text-lg text-white/50 mt-4">
-              Working behind the scenes to serve you better.
+
+            <p className="text-base md:text-lg text-white/50 mt-6 max-w-xl mx-auto">
+              We're building smarter healthcare technology that keeps patients at the center. Vital signs are looking good — launching soon.
             </p>
-            
-           
+
+            <p className="text-xs text-white/30 mt-4 uppercase tracking-widest">
+              Please watch out for this space!!
+            </p>
+
           </div>
         </section>
 
@@ -134,17 +128,7 @@ export default function HealthTechPage() {
             </div>
           </div>
         </footer>
-
       </main>
     </>
-  );
-}
-
-function TimeBox({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="bg-[#0A0A0F]/60 backdrop-blur-sm border border-[#1E6F9F]/20 p-2 text-center">
-      <span className="text-lg font-mono font-medium text-[#1E6F9F]">{value}</span>
-      <span className="block text-[7px] text-white/30 uppercase mt-0.5">{label}</span>
-    </div>
   );
 }
