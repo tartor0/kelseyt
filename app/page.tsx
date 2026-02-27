@@ -282,11 +282,11 @@ export default function Home() {
               What we&apos;re building
             </p>
             <p className="text-center text-white/40 text-sm mb-10 tracking-wide">
-              Click any service to learn more &amp; join the waitlist
+              Click any service to learn more
             </p>
 
             {/* Service cards — big icons, rounded */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
               {services.map((service, i) => {
                 const data = serviceData[service.key as Exclude<ServiceKey, null>];
                 return (
@@ -305,14 +305,14 @@ export default function Home() {
 
                     {/* Name + arrow */}
                     <div className="flex items-center justify-between mb-4">
-                      <span className="text-base font-bold uppercase tracking-widest text-white group-hover:text-[#1E6F9F] transition-colors">
+                      <span className="text-[15px] font-bold uppercase tracking-widest text-white group-hover:text-[#1E6F9F] transition-colors">
                         {service.name}
                       </span>
                       <span className="text-white/20 group-hover:text-[#1E6F9F]/70 transition-all group-hover:translate-x-1 duration-300">→</span>
                     </div>
 
                     {/* Blurb */}
-                    <p className="text-white/50 text-base leading-relaxed group-hover:text-white/70 transition-colors">
+                    <p className="text-white/50 text-[15px] leading-relaxed group-hover:text-white/70 transition-colors">
                       {data.cardBlurb}
                     </p>
                   </button>
