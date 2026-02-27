@@ -255,7 +255,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto flex flex-col gap-3">
           <div className="flex flex-col gap-0.5">
             <Link href="/">
-              <h1 className="text-2xl font-bold tracking-tighter uppercase text-white hover:text-[#1E6F9F] transition-colors inline-block">KELSEYT LLC</h1>
+              <h1 className="text-2xl font-bold tracking-tighter uppercase text-white hover:text-[#1E6F9F] transition-colors inline-block">KELSEY T LLC</h1>
             </Link>
             <p className="text-white/50 text-[12px] font-medium tracking-wide">4726 Oak Bluff Ct, Fulshear TX 77441</p>
           </div>
@@ -281,7 +281,7 @@ export default function Home() {
           <div className="max-w-6xl mx-auto w-full">
 
             {/* Catchphrase */}
-            <div className="text-center mb-50">
+            <div className="text-center mb-70">
               <h2 className="text-5xl md:text-7xl font-black tracking-tighter text-white mb-3">
                 Solutions that{' '}
                 <span className="text-[#1E6F9F] relative inline-block">
@@ -336,7 +336,7 @@ export default function Home() {
                 <Link href="/terms"   className="hover:text-white/80 transition-colors">Terms</Link>
                 <Link href="/contact" className="hover:text-white/80 transition-colors">Contact</Link>
               </div>
-              <p className="mt-2 sm:mt-0">© <span id="current-year"></span> KELSEYT</p>
+              <p className="mt-2 sm:mt-0">© <span id="current-year"></span> KELSEY T LLC</p>
             </div>
           </div>
         </footer>
